@@ -951,6 +951,15 @@ message ExecSyncResponse {
     int32 exit_code = 3;
 }
 
+message User {
+    // user id
+    uint32 uid = 1;
+    // group id
+    uint32 gid = 2;
+    // username
+    string username = 3;
+}
+
 message ExecRequest {
     // ID of the container in which to execute the command.
     string container_id = 1;
@@ -970,6 +979,8 @@ message ExecRequest {
     // in this case. The output of stdout and stderr will be combined to a
     // single stream.
     bool stderr = 6;
+    // execute command as a specific user
+    User user = 7;
 }
 
 message ExecResponse {

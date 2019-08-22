@@ -1244,7 +1244,7 @@ func testExecAttach(t *testing.T, verb string) {
 				return nil
 			}
 
-			ss.fakeRuntime.execFunc = func(containerID string, cmd []string, stdin io.Reader, stdout, stderr io.WriteCloser, tty bool, resize <-chan remotecommand.TerminalSize) error {
+			ss.fakeRuntime.execFunc = func(containerID string, cmd []string, user string, stdin io.Reader, stdout, stderr io.WriteCloser, tty bool, resize <-chan remotecommand.TerminalSize) error {
 				assert.Equal(t, expectedCommand, strings.Join(cmd, " "), "cmd")
 				return testStream(containerID, stdin, stdout, stderr, tty, done)
 			}

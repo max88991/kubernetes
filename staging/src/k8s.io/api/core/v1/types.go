@@ -4802,7 +4802,7 @@ type PodExecOptions struct {
 	Command []string `json:"command" protobuf:"bytes,6,rep,name=command"`
 
 	// User is the user identity used to execute exec.
-	User string `json:"user" protobuf:"bytes,6,rep,name=command"`
+	User string `json:"user,omitempty" protobuf:"bytes,7,opt,name=user"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

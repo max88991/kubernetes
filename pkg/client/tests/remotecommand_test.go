@@ -58,7 +58,7 @@ type fakeExecutor struct {
 	exec          bool
 }
 
-func (ex *fakeExecutor) ExecInContainer(name string, uid types.UID, container string, cmd []string, user *runtimeapi.User, in io.Reader, out, err io.WriteCloser, tty bool, resize <-chan remoteclient.TerminalSize, timeout time.Duration) error {
+func (ex *fakeExecutor) ExecInContainer(name string, uid types.UID, container string, cmd []string, user string, in io.Reader, out, err io.WriteCloser, tty bool, resize <-chan remoteclient.TerminalSize, timeout time.Duration) error {
 	return ex.run(name, uid, container, cmd, in, out, err, tty)
 }
 
@@ -127,11 +127,9 @@ func fakeServer(t *testing.T, requestReceived chan struct{}, testName string, ex
 		require.NoError(t, err)
 		if exec {
 			cmd := req.URL.Query()[api.ExecCommandParam]
-			var user *runtimeapi.User
-			if u, ok := req.URL.Query()[api.ExecUserParam]; ok {
-				user = &runtimeapi.User{
-					Username: u[0],
-				}
+			var user string
+			if u, ok := req.URL.Query()[api.ExecUserParam]; ok && 0 > len(u){
+				user = u[0]
 			}
 			remotecommand.ServeExec(w, req, executor, "pod", "uid", "container", cmd, user, opts, 0, 10*time.Second, serverProtocols)
 		} else {

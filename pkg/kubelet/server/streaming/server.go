@@ -61,7 +61,7 @@ type Server interface {
 
 // Runtime is the interface to execute the commands and provide the streams.
 type Runtime interface {
-	Exec(containerID string, cmd []string, user *runtimeapi.User, in io.Reader, out, err io.WriteCloser, tty bool, resize <-chan remotecommand.TerminalSize) error
+	Exec(containerID string, cmd []string, user string, in io.Reader, out, err io.WriteCloser, tty bool, resize <-chan remotecommand.TerminalSize) error
 	Attach(containerID string, in io.Reader, out, err io.WriteCloser, tty bool, resize <-chan remotecommand.TerminalSize) error
 	PortForward(podSandboxID string, port int32, stream io.ReadWriteCloser) error
 }
@@ -370,7 +370,7 @@ var _ remotecommandserver.Executor = &criAdapter{}
 var _ remotecommandserver.Attacher = &criAdapter{}
 var _ portforward.PortForwarder = &criAdapter{}
 
-func (a *criAdapter) ExecInContainer(podName string, podUID types.UID, container string, cmd []string, user *runtimeapi.User, in io.Reader, out, err io.WriteCloser, tty bool, resize <-chan remotecommand.TerminalSize, timeout time.Duration) error {
+func (a *criAdapter) ExecInContainer(podName string, podUID types.UID, container string, cmd []string, user string, in io.Reader, out, err io.WriteCloser, tty bool, resize <-chan remotecommand.TerminalSize, timeout time.Duration) error {
 	return a.Runtime.Exec(container, cmd, user, in, out, err, tty, resize)
 }
 

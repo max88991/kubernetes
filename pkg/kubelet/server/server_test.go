@@ -143,13 +143,13 @@ func (fk *fakeKubelet) RunInContainer(podFullName string, uid types.UID, contain
 }
 
 type fakeRuntime struct {
-	execFunc        func(string, []string, io.Reader, io.WriteCloser, io.WriteCloser, bool, <-chan remotecommand.TerminalSize) error
+	execFunc        func(string, []string, string, io.Reader, io.WriteCloser, io.WriteCloser, bool, <-chan remotecommand.TerminalSize) error
 	attachFunc      func(string, io.Reader, io.WriteCloser, io.WriteCloser, bool, <-chan remotecommand.TerminalSize) error
 	portForwardFunc func(string, int32, io.ReadWriteCloser) error
 }
 
-func (f *fakeRuntime) Exec(containerID string, cmd []string, stdin io.Reader, stdout, stderr io.WriteCloser, tty bool, resize <-chan remotecommand.TerminalSize) error {
-	return f.execFunc(containerID, cmd, stdin, stdout, stderr, tty, resize)
+func (f *fakeRuntime) Exec(containerID string, cmd []string, user string, stdin io.Reader, stdout, stderr io.WriteCloser, tty bool, resize <-chan remotecommand.TerminalSize) error {
+	return f.execFunc(containerID, cmd, user, stdin, stdout, stderr, tty, resize)
 }
 
 func (f *fakeRuntime) Attach(containerID string, stdin io.Reader, stdout, stderr io.WriteCloser, tty bool, resize <-chan remotecommand.TerminalSize) error {

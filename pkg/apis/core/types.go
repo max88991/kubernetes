@@ -4758,6 +4758,7 @@ const (
 	ExecTTYParam = "tty"
 	// Command to run for remote command execution
 	ExecCommandParam = "command"
+	ExecUserParam = "user"
 
 	// Name of header that specifies stream type
 	StreamType = "streamType"

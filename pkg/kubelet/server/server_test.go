@@ -195,7 +195,7 @@ func newTestStreamingServer(streamIdleTimeout time.Duration) (s *testStreamingSe
 	return s, nil
 }
 
-func (fk *fakeKubelet) GetExec(podFullName string, podUID types.UID, containerName string, cmd []string, streamOpts remotecommandserver.Options) (*url.URL, error) {
+func (fk *fakeKubelet) GetExec(podFullName string, podUID types.UID, containerName string, cmd []string, user string, streamOpts remotecommandserver.Options) (*url.URL, error) {
 	if fk.getExecCheck != nil {
 		fk.getExecCheck(podFullName, podUID, containerName, cmd, streamOpts)
 	}
@@ -207,6 +207,7 @@ func (fk *fakeKubelet) GetExec(podFullName string, podUID types.UID, containerNa
 		Stdin:       streamOpts.Stdin,
 		Stdout:      streamOpts.Stdout,
 		Stderr:      streamOpts.Stderr,
+		User:        user,
 	})
 	if err != nil {
 		return nil, err
